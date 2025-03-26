@@ -5,8 +5,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { currentUser } from "@clerk/nextjs/server";
+import Link from "next/link";
 
-export function MobileNav() {
+export async function MobileNav() {
+  const user = await currentUser();
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -20,11 +23,20 @@ export function MobileNav() {
           </div>
         </button>
       </SheetTrigger>
-      <SheetContent side="top" className='h-[50vh] flex items-center justify-center bg-transparent backdrop-blur border-b-gray-500 dark:border-b-neutral-900'>
+      <SheetContent
+        side="top"
+        className="h-[50vh] flex items-center justify-center bg-transparent backdrop-blur border-b-gray-500 dark:border-b-neutral-900"
+      >
         <SheetTitle></SheetTitle>
         <div className="flex flex-col items-center gap-2">
-          <Button variant="ghost">Login</Button>
-          <Button>Get Started - It&apos;s Free</Button>
+          <Link href="/sign-in">
+            <Button variant="ghost">Login</Button>
+          </Link>
+          <Link href="/sign-up">
+            <Button>
+              {user ? "Dashboard" : "Get Started - It's Free"}
+            </Button>
+          </Link>
         </div>
       </SheetContent>
     </Sheet>

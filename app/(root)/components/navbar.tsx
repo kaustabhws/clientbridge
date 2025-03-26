@@ -2,8 +2,13 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { MobileNav } from "./mobile-nav";
 import { ModeToggle } from "@/components/mode-toggle";
+import { currentUser } from "@clerk/nextjs/server";
+import Link from "next/link";
+import { SignOutButton } from "@clerk/nextjs";
 
-const HomeNavbar = () => {
+const HomeNavbar = async () => {
+  const user = await currentUser();
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
       <div className="flex items-center justify-between px-6 py-4 backdrop-blur-xl /50 min-[540px]:px-6 border-b">
@@ -13,8 +18,18 @@ const HomeNavbar = () => {
         </div>
         <div className="flex items-center gap-2 max-[500px]:hidden">
           <ModeToggle />
-          <Button variant="ghost">Login</Button>
-          <Button>Get Started - It&apos;s Free</Button>
+          <Link href="/sign-in">
+            {user ? (
+              <SignOutButton>
+                <Button variant="ghost">Log Out</Button>
+              </SignOutButton>
+            ) : (
+              <Button variant="ghost">Login</Button>
+            )}
+          </Link>
+          <Link href="/sign-up">
+            <Button>{user ? "Dashboard" : "Get Started - It's Free"}</Button>
+          </Link>
         </div>
         <div className="hidden max-[500px]:block">
           <MobileNav />

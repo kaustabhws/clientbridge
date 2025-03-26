@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { InteractiveGrid } from "./interactive-grid";
 import { Play, ArrowRight } from "lucide-react";
+import { currentUser } from "@clerk/nextjs/server";
 
-export function HeroSection() {
+export async function HeroSection() {
+  const user = await currentUser();
+
   return (
     <section className="relative min-h-screen pt-32 pb-16 overflow-hidden ">
       <InteractiveGrid
@@ -31,7 +34,7 @@ export function HeroSection() {
             Watch Demo
           </Button>
           <Button>
-            Get Started
+            {user ? "Dashboard" : "Get Started"}
             <ArrowRight className="w-4 h-4" />
           </Button>
         </div>

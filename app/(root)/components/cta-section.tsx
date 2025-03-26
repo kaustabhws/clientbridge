@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { InteractiveGrid } from "@/app/(root)/components/interactive-grid"
+import { InteractiveGrid } from "./interactive-grid" 
 
 export function CTASection() {
   return (

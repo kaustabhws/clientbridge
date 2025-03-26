@@ -1,4 +1,4 @@
-import { GradientCard } from "@/app/(root)/components/gradient-card";
+import { GradientCard } from "./gradient-card";
 import {
   Clock,
   CreditCard,
