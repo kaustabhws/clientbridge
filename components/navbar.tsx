@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { BellIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -16,10 +15,8 @@ export function Navbar() {
         {/* Left section - Logo */}
         <div className="flex items-center gap-2">
           <MobileNav />
-          <Link href="/" className="flex items-center gap-2 font-bold">
-            <Image src="/logo.svg" alt="logo" width={40} height={40} />
-            <p className="text-xl font-bold">ClientBridge</p>
-          </Link>
+          <Image src="/logo.svg" alt="logo" width={40} height={40} />
+          <p className="text-xl font-bold">ClientBridge</p>
         </div>
 
         {/* Middle section - Navigation (hidden on mobile) */}

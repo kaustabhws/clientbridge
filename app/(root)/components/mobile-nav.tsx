@@ -5,11 +5,18 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import prismadb from "@/lib/prismadb";
 import { currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
 
 export async function MobileNav() {
   const user = await currentUser();
+  const freelancer = await prismadb.freelancer.findFirst({
+    where: {
+      clerkId: user?.id,
+    },
+  });
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -32,7 +39,7 @@ export async function MobileNav() {
           <Link href="/sign-in">
             <Button variant="ghost">Login</Button>
           </Link>
-          <Link href="/sign-up">
+          <Link href={user ? `/dashboard/${freelancer?.id}` : "/sign-up"}>
             <Button>
               {user ? "Dashboard" : "Get Started - It's Free"}
             </Button>

@@ -2,9 +2,17 @@ import { Button } from "@/components/ui/button";
 import { InteractiveGrid } from "./interactive-grid";
 import { Play, ArrowRight } from "lucide-react";
 import { currentUser } from "@clerk/nextjs/server";
+import prismadb from "@/lib/prismadb";
+import Link from "next/link";
 
 export async function HeroSection() {
   const user = await currentUser();
+
+  const freelancer = await prismadb.freelancer.findFirst({
+    where: {
+      clerkId: user?.id,
+    },
+  });
 
   return (
     <section className="relative min-h-screen pt-32 pb-16 overflow-hidden ">
@@ -33,10 +41,12 @@ export async function HeroSection() {
             <Play className="w-4 h-4" />
             Watch Demo
           </Button>
-          <Button>
-            {user ? "Dashboard" : "Get Started"}
-            <ArrowRight className="w-4 h-4" />
-          </Button>
+          <Link href={user ? `/dashboard/${freelancer?.id}` : "/sign-up"}>
+            <Button>
+              {user ? "Dashboard" : "Get Started"}
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </Link>
         </div>
       </div>
       <div className="relative">

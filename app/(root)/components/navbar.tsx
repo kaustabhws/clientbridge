@@ -5,9 +5,16 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { SignOutButton } from "@clerk/nextjs";
+import prismadb from "@/lib/prismadb";
 
 const HomeNavbar = async () => {
   const user = await currentUser();
+
+  const freelancer = await prismadb.freelancer.findFirst({
+    where: {
+      clerkId: user?.id,
+    },
+  });
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
@@ -27,7 +34,7 @@ const HomeNavbar = async () => {
               <Button variant="ghost">Login</Button>
             )}
           </Link>
-          <Link href="/sign-up">
+          <Link href={user ? `/dashboard/${freelancer?.id}` : "/sign-up"}>
             <Button>{user ? "Dashboard" : "Get Started - It's Free"}</Button>
           </Link>
         </div>
