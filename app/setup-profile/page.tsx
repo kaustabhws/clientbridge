@@ -63,7 +63,7 @@ export default function SetupPage() {
       const response = await axios.post("/api/profile", values);
       if (response.status === 200) {
         toast.success("Profile setup complete!");
-        router.push(`/${response.data.id}/dashboard`);
+        router.push(`/${response.data.id}/`);
       }
     } catch (error) {
       console.log(error)

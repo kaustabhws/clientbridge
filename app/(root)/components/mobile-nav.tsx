@@ -39,7 +39,7 @@ export async function MobileNav() {
           <Link href="/sign-in">
             <Button variant="ghost">Login</Button>
           </Link>
-          <Link href={user ? `/${freelancer?.id}/dashboard` : "/sign-up"}>
+          <Link href={user ? `/${freelancer?.id}/` : "/sign-up"}>
             <Button>
               {user ? "Dashboard" : "Get Started - It's Free"}
             </Button>
