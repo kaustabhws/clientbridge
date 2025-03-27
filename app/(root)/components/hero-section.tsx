@@ -41,7 +41,7 @@ export async function HeroSection() {
             <Play className="w-4 h-4" />
             Watch Demo
           </Button>
-          <Link href={user ? `/dashboard/${freelancer?.id}` : "/sign-up"}>
+          <Link href={user ? `/${freelancer?.id}/dashboard` : "/sign-up"}>
             <Button>
               {user ? "Dashboard" : "Get Started"}
               <ArrowRight className="w-4 h-4" />

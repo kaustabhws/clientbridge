@@ -20,7 +20,7 @@ export default async function RootLayout({
   });
 
   if(freelancer) {
-    redirect(`/dashboard/${freelancer.id}`)
+    redirect(`/${freelancer.id}/dashboard`)
   }
 
   return <div>{children}</div>;
