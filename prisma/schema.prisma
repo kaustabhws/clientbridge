@@ -8,33 +8,33 @@ datasource db {
 }
 
 model Freelancer {
-  id           String   @id @default(cuid())
-  name         String
-  email        String   @unique
-  clerkId      String   @unique
-  profession   String
-  bio          String?  
-  skills       String[]
-  balance      Float    @default(0.0)
+  id         String   @id @default(cuid())
+  name       String
+  email      String   @unique
+  clerkId    String   @unique
+  profession String
+  bio        String?
+  skills     String[]
+  balance    Float    @default(0.0)
 
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // relationships
-  clients  Clients[]  
-  projects Projects[]  
+  clients  Clients[]
+  projects Projects[]
   invoices Invoices[]
 }
 
 model Clients {
-  id       String  @id @default(cuid())
-  name     String
-  email    String  @unique
-  phone    String?
-  company  String?  
-  address  String?  
-  notes    String?  
-  status   Status
+  id      String       @id @default(cuid())
+  name    String
+  email   String       @unique
+  phone   String?
+  company String?
+  address String?
+  notes   String?
+  status  ClientStatus
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -47,15 +47,14 @@ model Clients {
 }
 
 model Projects {
-  id          String   @id @default(cuid())
+  id          String        @id @default(cuid())
   name        String
   description String
-  status      Status
-  budget      Float?  
+  status      ProjectStatus
+  budget      Float?
   deadline    DateTime
-  milestones  Json?  
-  attachments String[]  
-  progress    Int      @default(0)  
+  attachments String[]
+  progress    Int           @default(0)
   completedAt DateTime?
 
   createdAt DateTime @default(now())
@@ -63,38 +62,85 @@ model Projects {
 
   // relationships
   clientId     String
-  client       Clients    @relation(fields: [clientId], references: [id])
+  client       Clients        @relation(fields: [clientId], references: [id])
   freelancerId String
-  freelancer   Freelancer @relation(fields: [freelancerId], references: [id])
+  freelancer   Freelancer     @relation(fields: [freelancerId], references: [id])
   invoices     Invoices[]
+  roadmap      RoadmapPhase[]
+}
+
+model RoadmapPhase {
+  id          String             @id @default(cuid())
+  name        String
+  startDate   DateTime
+  endDate     DateTime
+  order       Int
+  description String?
+  status      RoadmapPhaseStatus
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relationships
+  projectId String
+  project   Projects     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  steps     PhaseSteps[]
+}
+
+model PhaseSteps {
+  id          String             @id @default(cuid())
+  name        String
+  order       Int
+  description String?
+  status      RoadmapPhaseStatus
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relationships
+  roadmapPhaseId String
+  roadmapPhase   RoadmapPhase @relation(fields: [roadmapPhaseId], references: [id], onDelete: Cascade)
 }
 
 model Invoices {
-  id            String   @id @default(cuid())
-  invoiceNumber String   @unique
+  id            String        @id @default(cuid())
+  invoiceNumber String        @unique
   amount        Float
-  currency      String   @default("USD")
+  currency      String        @default("USD")
   status        InvoiceStatus
   dueDate       DateTime
   paidAt        DateTime?
   paymentMethod PaymentMethod
   notes         String?
 
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // relationships
   freelancerId String
   freelancer   Freelancer @relation(fields: [freelancerId], references: [id])
   clientId     String
-  client       Clients @relation(fields: [clientId], references: [id])
+  client       Clients    @relation(fields: [clientId], references: [id])
   projectId    String
-  project      Projects @relation(fields: [projectId], references: [id])
+  project      Projects   @relation(fields: [projectId], references: [id])
 }
 
-enum Status {
+enum ClientStatus {
   ACTIVE
   INACTIVE
+}
+
+enum ProjectStatus {
+  IN_PROGRESS
+  COMPLETED
+  ON_HOLD
+  CANCELLED
+}
+
+enum RoadmapPhaseStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
 }
 
 enum InvoiceStatus {

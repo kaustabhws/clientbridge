@@ -2,6 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
+import { Badge } from "@/components/ui/badge";
 
 export type ClientColumn = {
   id: string;
@@ -31,13 +32,11 @@ export const columns: ColumnDef<ClientColumn>[] = [
     header: "Status",
     cell: ({ row }) => {
       return (
-        <span
-          className={`inline-flex items-center rounded-full border px-2.5 py-0.5 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 whitespace-nowrap text-xs font-semibold ${
-            row.original.status === "ACTIVE" ? "bg-green-500" : "bg-red-500"
-          }`}
+        <Badge
+          variant={row.original.status === "ACTIVE" ? "default" : "destructive"}
         >
           {row.original.status}
-        </span>
+        </Badge>
       );
     },
   },

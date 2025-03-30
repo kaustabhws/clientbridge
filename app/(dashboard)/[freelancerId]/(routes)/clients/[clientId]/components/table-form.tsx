@@ -22,7 +22,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Clients, Status } from "@prisma/client";
+import { Clients, ClientStatus } from "@prisma/client";
 import axios from "axios";
 import { Trash } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
@@ -32,13 +32,15 @@ import toast from "react-hot-toast";
 import * as z from "zod";
 
 const formSchema = z.object({
-  name: z.string().min(1),
-  company: z.string().min(1),
+  name: z.string().min(1, {
+    message: "Name is required",
+  }),
+  company: z.string().optional(),
   email: z.string().email(),
-  status: z.nativeEnum(Status),
-  phone: z.string().min(1),
-  address: z.string().min(1),
-  notes: z.string().min(1),
+  status: z.nativeEnum(ClientStatus),
+  phone: z.string().optional(),
+  address: z.string().optional(),
+  notes: z.string().optional(),
 });
 
 type ClientFormValues = z.infer<typeof formSchema>;
